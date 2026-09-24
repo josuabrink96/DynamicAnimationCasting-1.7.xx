@@ -1,8 +1,9 @@
 #include "PCH.h"
 #include "framework.h"
 #define TOML_EXCEPTIONS 0
+#undef TOML_HEADER_ONLY
+#define TOML_HEADER_ONLY 1
 #include <toml++/toml.h>
-#include "Expression.h"
 
 void Loki::DynamicAnimationCasting::ReadToml(std::filesystem::path path) {
     logger::info("Reading {}...", path.string());
@@ -126,7 +127,7 @@ void Loki::DynamicAnimationCasting::ReadToml(std::filesystem::path path) {
 
             auto& trigger = CastTriggers.emplace_back();
             trigger.tag = event["AnimationEvent"].value_or(empty_string);
-            logger::info("- Cast Trigger [{}]", trigger.tag);
+            logger::info("- Cast Trigger [{}]", trigger.tag.c_str());
 
             auto exGroupName = event["ExclusiveGroup"].value_or(empty_string);
             if (!exGroupName.empty()) {
@@ -388,11 +389,11 @@ int Loki::DynamicAnimationCasting::SetMagicFavourite(int Index) {
     const auto& favSpells = RE::MagicFavorites::GetSingleton()->spells;
     if (Index < 0 || Index >= favSpells.size()) {
         MagicFavouriteIndex = -1;
-        RE::DebugNotification("Selected Spell : None");
+        RE::SendHUDMessage::ShowHUDMessage("Selected Spell : None");
     } else {
         MagicFavouriteIndex = Index;
         auto message = fmt::format("Selected Spell : {}", favSpells[Index]->GetName());
-        RE::DebugNotification(message.c_str());
+        RE::SendHUDMessage::ShowHUDMessage(message.c_str());
     }
     return MagicFavouriteIndex;
 }

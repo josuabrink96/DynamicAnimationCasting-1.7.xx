@@ -178,10 +178,10 @@ bool Loki::AnimationCasting::CastTrigger::Invoke(const RE::Actor* a_caster)
     auto CastSpells = [&](RE::MagicSystem::CastingSource source, float magnitude, bool dual_casting) -> bool {
         // logger::info("Passed all conditional checks, subtracting costs and casting spells now...");
         if (healthCost != 0.f && actorAV) {
-            actorAV->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kHealth, healthCost * -1.00f);
+            actorAV->ModActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kHealth, healthCost * -1.00f);
         }
         if (staminaCost != 0.f && actorAV) {
-            actorAV->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kStamina, staminaCost * -1.00f);
+            actorAV->ModActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kStamina, staminaCost * -1.00f);
         }
         float totalMagikaCost = this->magickaCost;
 
@@ -330,7 +330,7 @@ bool Loki::AnimationCasting::CastTrigger::Invoke(const RE::Actor* a_caster)
         // Deduce the final magicka cost
         CAST_SPELLS_END:
         if (totalMagikaCost != 0.f && actorAV) {
-            actorAV->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kMagicka, totalMagikaCost * -1.00f);
+            actorAV->ModActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kMagicka, totalMagikaCost * -1.00f);
         }
 
         return casted;

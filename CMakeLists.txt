@@ -50,7 +50,13 @@ message("\tTests: ${BUILD_TESTS}")
 ########################################################################################################################
 ## Configure target DLL
 ########################################################################################################################
-find_package(CommonLibSSE CONFIG REQUIRED)
+set(COMMONLIBSSE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../clib-ng" CACHE PATH "CommonLibSSE-NG (alandtse) checkout")
+set(_saved_build_tests ${BUILD_TESTS})
+set(BUILD_TESTS OFF)
+set(SKSE_SUPPORT_XBYAK ON CACHE BOOL "" FORCE)
+add_subdirectory("${COMMONLIBSSE_SOURCE_DIR}" CommonLibSSE EXCLUDE_FROM_ALL)
+set(BUILD_TESTS ${_saved_build_tests})
+include("${COMMONLIBSSE_SOURCE_DIR}/cmake/CommonLibSSE.cmake")
 find_package(span-lite CONFIG REQUIRED)
 # find_package(xbyak CONFIG REQUIRED)
 find_package(tomlplusplus CONFIG REQUIRED)
